@@ -1,0 +1,7 @@
+{
+  "name": "Crown & Roots Dental Clinic",
+  "description": "Modern, minimalistic single-page dental clinic website with multi-tab navigation, typewriter hero, services slider, doctors portfolio, interactive Gemini AI assistant, and appointment booking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

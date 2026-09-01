@@ -1,11 +1,38 @@
-<div align="center">
+# Crown & Roots Dental Clinic
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A modern, responsive dental clinic web application built with React, TypeScript, Tailwind CSS, and Vite.
 
-  <h1>Built with AI Studio</h2>
+## Features
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- **Painless Dental Treatments**: Interactive treatment carousel and procedural breakdowns.
+- **MDS Specialist Profiles**: Portfolio of dental surgeons and specialists with credentials and accolades.
+- **Real-Time Appointment Booking**: Booking modal with doctor selection, date/time slots, and SMS/WhatsApp confirmation workflows.
+- **AI Dental Concierge**: Interactive Gemini-powered dental assistant for patient FAQs and pre-visit queries.
+- **Sterilization Protocols**: Interactive hospital-grade sterilization and clinic suite tour.
+- **Location & Navigation**: Multi-branch South Delhi and Gurgaon clinic addresses with Google Maps integration.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Getting Started
 
-</div>
+### Prerequisites
+
+- Node.js 18+
+- npm or bun
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Tech Stack
+
+- **Frontend**: React 19, TypeScript, Tailwind CSS, Motion
+- **Icons**: FontAwesome 6, Lucide React
+- **Build Tool**: Vite
