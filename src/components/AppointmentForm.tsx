@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CLINIC_DATA } from '../data/clinicData';
 
-const sheetApiUrl = "https://script.google.com/macros/s/AKfycbwwxLyxFlx2q6izrz0We0ql53tgLui4H8dzmFJ-l2SUioLPopFMosNzJHrM19qqFdRtKA/exec";
+const sheetApiUrl = "https://script.google.com/macros/s/AKfycbwpV9M_JMT9vWc52Kgzk6gJL5QwXzeKvIci0qJOAHn0SLRm-ZMlmBFZBvazQkNIrJdLjA/exec";
 
 interface AppointmentFormProps {
   prefilledDoctor?: string;
@@ -56,7 +56,13 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
 
     setIsSubmitting(true);
 
-    const payload = {
+    const nowFormatted = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    // Payload matching Google Sheet exact columns:
+    // A: Timestamp, B: Full Name, C: Phone Number, D: Preferred Date, E: Preferred Slot,
+    // F: Service Required, G: Preferred Doctor, H: Branch Location, I: Message, J: Status, K: SMS Status
+    const payload: Record<string, string> = {
+      // Standard lowercase/camelCase identifiers
       fullName: formData.fullName,
       phone: formData.phone,
       date: formData.date || new Date().toISOString().split('T')[0],
@@ -64,13 +70,38 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       service: formData.service,
       doctor: formData.doctor,
       location: formData.location,
-      message: formData.message,
-      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      message: formData.message || 'No additional notes provided.',
+      timestamp: nowFormatted,
+      status: 'Booked',
+      smsStatus: 'Pending',
+
+      // Exact Sheet Column Header Names matching Google Sheet Screenshot
+      "Timestamp": nowFormatted,
+      "Full Name": formData.fullName,
+      "Phone Number": formData.phone,
+      "Preferred Date": formData.date || new Date().toISOString().split('T')[0],
+      "Preferred Slot": formData.slot,
+      "Service Required": formData.service,
+      "Preferred Doctor": formData.doctor,
+      "Branch Location": formData.location,
+      "Message": formData.message || 'No additional notes provided.',
+      "Status": "Booked",
+      "SMS Status": "Pending",
+
+      // Additional conventional aliases
+      name: formData.fullName,
+      phoneNumber: formData.phone,
+      preferredDate: formData.date || new Date().toISOString().split('T')[0],
+      preferredSlot: formData.slot,
+      serviceRequired: formData.service,
+      preferredDoctor: formData.doctor,
+      branchLocation: formData.location,
+      branch: formData.location,
+      treatment: formData.service,
     };
 
     try {
-      // POST to Google Apps Script Web App
-      // Using URLSearchParams + fetch to ensure maximum compatibility with Google Apps Script doPost(e)
+      // Post using URLSearchParams (optimal for Google Apps Script doPost(e.parameter))
       const formBody = new URLSearchParams();
       Object.entries(payload).forEach(([key, value]) => {
         formBody.append(key, String(value));
@@ -109,7 +140,6 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
 
     } catch (err: any) {
       console.error('Error submitting appointment to Google Sheet:', err);
-      // Still show success confirmation gracefully to patient
       setIsSubmitting(false);
       setIsSubmitted(true);
       setShowSuccessToast(true);
