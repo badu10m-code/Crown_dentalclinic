@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CLINIC_DATA } from '../data/clinicData';
 
-const sheetApiUrl = "https://script.google.com/macros/s/AKfycbwtYaTIxUiI3NXSEUic8Gzws1YyfrrgWxfJI6yQ4QW39ArLAKuKPfU_80zsNDyE_9vBlQ/exec";
+const sheetApiUrl = "https://script.google.com/macros/s/AKfycbxBDdnmVwKxUaXIelOVYqSKOzB-v2heEdkizra_7DTijx-vBXc_sUcwwXk6M9HB-WbvHg/exec";
 
 interface AppointmentFormProps {
   prefilledDoctor?: string;

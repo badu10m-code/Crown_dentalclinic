@@ -58,7 +58,7 @@ export const CLINIC_DATA = {
   whatsappUrl: "https://wa.me/919999999999?text=Hello%20Crown%20%26%20Roots%20Dental%20Clinic%2C%20I%20would%20like%20to%20inquire%20about%20a%20dental%20appointment%20and%20consultation.",
   email: "care@crownandroots.com",
   timings: "9:30 AM to 7:30 PM (Mon - Sat) | Sunday: By Appointment",
-  googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbwtYaTIxUiI3NXSEUic8Gzws1YyfrrgWxfJI6yQ4QW39ArLAKuKPfU_80zsNDyE_9vBlQ/exec",
+  googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbxBDdnmVwKxUaXIelOVYqSKOzB-v2heEdkizra_7DTijx-vBXc_sUcwwXk6M9HB-WbvHg/exec",
   instagramEmbedPlaceholder: "INSTAGRAM_EMBED_CODE_HERE",
   googleMapsEmbedPlaceholder: "GOOGLE_MAPS_IFRAME_HERE",
   
