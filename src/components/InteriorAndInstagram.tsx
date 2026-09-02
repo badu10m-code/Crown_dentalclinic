@@ -4,10 +4,6 @@ import { CLINIC_DATA } from '../data/clinicData';
 export const InteriorAndInstagram: React.FC = () => {
   const interiors = CLINIC_DATA.interiorGallery;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [instagramCode, setInstagramCode] = useState<string>(
-    CLINIC_DATA.instagramEmbedPlaceholder
-  );
-  const [isPlayingDemoVideo, setIsPlayingDemoVideo] = useState(false);
 
   return (
     <section className="py-12 bg-white border-t border-slate-100">
@@ -25,7 +21,7 @@ export const InteriorAndInstagram: React.FC = () => {
           </p>
         </div>
 
-        {/* 2-Column Section: Left Interior Grid, Right Instagram Reel/Video Area */}
+        {/* 2-Column Section: Left Interior Grid, Right YouTube Shorts Container */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left: 4 Clinic Interior Blocks */}
           <div className="lg:col-span-7">
@@ -89,107 +85,56 @@ export const InteriorAndInstagram: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Instagram Video / Reels Layout Block */}
-          <div className="lg:col-span-5 bg-white border border-slate-100 rounded-3xl p-5 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center text-xs shadow">
-                  <i className="fa-brands fa-instagram"></i>
+          {/* Right: YouTube Shorts Vertical Container (Width ~370px, Height ~658px) */}
+          <div className="lg:col-span-5 flex flex-col items-center">
+            <div className="w-full max-w-[370px] bg-white border border-slate-100 rounded-3xl p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs shadow">
+                    <i className="fa-brands fa-youtube"></i>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xs text-slate-900">
+                      Patient Stories & Shorts
+                    </h3>
+                    <p className="text-[10px] text-slate-400">
+                      Crown & Roots Clinic Experience
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-xs text-slate-900">
-                    Patient Smile Transformations
-                  </h3>
-                  <p className="text-[10px] text-slate-400">
-                    @crownroots_dental on Instagram
-                  </p>
-                </div>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1"
+                >
+                  YouTube <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
               </div>
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1"
+
+              {/* Responsive YouTube Shorts Frame (370px x 658px standard vertical ratio) */}
+              <div
+                id="youtube-shorts-container"
+                className="relative w-full max-w-[370px] h-[540px] sm:h-[620px] lg:h-[658px] mx-auto rounded-2xl overflow-hidden bg-black shadow-inner border border-slate-200"
               >
-                Follow <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-              </a>
-            </div>
+                <iframe
+                  src="https://www.youtube.com/embed/YlF_fm5UPNE"
+                  title="Crown & Roots Dental Clinic - Patient Story & Smile Makeover"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="w-full h-full border-0 rounded-2xl"
+                ></iframe>
+              </div>
 
-            {/* Video Player / Mock Reel Stage */}
-            <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 aspect-[9/12] max-h-[380px] mx-auto shadow-inner flex flex-col justify-between">
-              {isPlayingDemoVideo ? (
-                <div className="relative w-full h-full flex items-center justify-center bg-black">
-                  <video
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    src="https://assets.mixkit.co/videos/preview/mixkit-dentist-examining-a-patients-teeth-41584-large.mp4"
-                  />
-                  <button
-                    onClick={() => setIsPlayingDemoVideo(false)}
-                    className="absolute top-3 right-3 w-7 h-7 rounded-full bg-slate-900/80 text-white flex items-center justify-center cursor-pointer"
-                  >
-                    <i className="fa-solid fa-pause text-xs"></i>
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <img
-                    src="https://images.unsplash.com/photo-1571772996211-2f02c9727629?q=80&w=800&auto=format&fit=crop"
-                    alt="Dental Transformation Reel"
-                    className="absolute inset-0 w-full h-full object-cover opacity-75"
-                  />
-                  <div className="relative z-10 p-3 flex justify-between items-start">
-                    <span className="bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                      Patient Reel
-                    </span>
-                    <span className="bg-black/60 text-white text-[10px] px-2 py-0.5 rounded">
-                      0:45
-                    </span>
-                  </div>
-
-                  {/* Central Play Button */}
-                  <div className="relative z-10 flex flex-col items-center justify-center my-auto">
-                    <button
-                      id="play-instagram-reel-btn"
-                      onClick={() => setIsPlayingDemoVideo(true)}
-                      className="w-13 h-13 rounded-full bg-white text-rose-600 flex items-center justify-center text-lg shadow-xl hover:scale-105 transition-transform active:scale-95 cursor-pointer"
-                    >
-                      <i className="fa-solid fa-play ml-1"></i>
-                    </button>
-                    <p className="text-white text-xs font-bold mt-2 drop-shadow">
-                      Watch Smile Reveal
-                    </p>
-                  </div>
-
-                  {/* Bottom Reel Caption */}
-                  <div className="relative z-10 p-3 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent text-white">
-                    <p className="text-xs font-bold">
-                      Full mouth smile makeover with Dr. Priya Patel ✨
-                    </p>
-                    <p className="text-[10px] text-slate-300 mt-0.5">
-                      #CrownAndRoots #DentalMakeover #PainlessDentistry
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Instagram Embed Code Slot */}
-            <div className="mt-3 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-              <div className="flex items-center justify-between text-slate-400 mb-1">
-                <span className="font-semibold text-[10px] uppercase tracking-wider text-slate-500">
-                  Instagram Embed Slot:
+              <div className="mt-3 px-1 flex items-center justify-between text-[11px] text-slate-500">
+                <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  Real Patient Transformation
                 </span>
-                <span className="text-[10px] text-teal-600 font-bold bg-teal-50 px-1.5 py-0.5 rounded">
-                  Active
+                <span className="text-[10px] bg-red-50 text-red-700 font-semibold px-2 py-0.5 rounded-full border border-red-100">
+                  Shorts Video
                 </span>
               </div>
-              <code className="text-[10px] text-slate-500 font-mono block truncate bg-white p-1 rounded border border-slate-100">
-                {instagramCode}
-              </code>
             </div>
           </div>
         </div>

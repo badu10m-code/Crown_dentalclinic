@@ -53,15 +53,24 @@ export const DoctorsPortfolio: React.FC<DoctorsPortfolioProps> = ({
               >
                 <div>
                   <div className="flex items-center gap-4">
-                    <div className="relative">
-                      <div className={`w-14 h-14 rounded-full ${badgeColorClass} flex items-center justify-center font-bold text-base border-2 border-white shadow-md flex-shrink-0`}>
-                        {initials}
-                      </div>
+                    <div className="relative w-16 h-16 flex-shrink-0">
                       <img
                         src={doc.image}
                         alt={doc.name}
-                        className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        referrerPolicy="no-referrer"
+                        className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md bg-teal-50"
+                        onError={(e) => {
+                          // Fallback to alternative drive direct export if needed
+                          const target = e.currentTarget;
+                          const fileId = doc.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                          if (fileId && !target.src.includes('uc?export=view')) {
+                            target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                          }
+                        }}
                       />
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[9px] shadow">
+                        <i className="fa-solid fa-user-doctor"></i>
+                      </div>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-slate-900 text-base group-hover:text-teal-600 transition-colors truncate">
@@ -127,7 +136,15 @@ export const DoctorsPortfolio: React.FC<DoctorsPortfolioProps> = ({
               <img
                 src={selectedDoctor.image}
                 alt={selectedDoctor.name}
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-teal-500 shadow-md"
+                referrerPolicy="no-referrer"
+                className="w-20 h-20 rounded-2xl object-cover border-2 border-teal-500 shadow-md bg-teal-50"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  const fileId = selectedDoctor.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                  if (fileId && !target.src.includes('uc?export=view')) {
+                    target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                  }
+                }}
               />
               <div>
                 <h3 className="text-xl font-extrabold text-slate-900">
@@ -162,17 +179,47 @@ export const DoctorsPortfolio: React.FC<DoctorsPortfolioProps> = ({
                 </ul>
               </div>
 
-              {/* Drive Link Placeholder reference */}
-              <div className="bg-teal-50/70 rounded-xl p-3 border border-teal-200 text-xs text-teal-900 flex items-center justify-between">
-                <div>
-                  <span className="font-bold block text-[11px] uppercase tracking-wider">
-                    Drive Photo Asset Link:
-                  </span>
-                  <code className="text-[11px] text-teal-800 break-all font-mono">
-                    {selectedDoctor.driveLink}
-                  </code>
-                </div>
-                <i className="fa-brands fa-google-drive text-teal-600 text-xl ml-2 flex-shrink-0"></i>
+              {/* Resource Links: Google Drive & Gemini */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <a
+                  href={selectedDoctor.driveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-teal-50/80 hover:bg-teal-100/80 transition-colors rounded-xl p-3 border border-teal-200 text-xs text-teal-900 flex items-center justify-between group"
+                >
+                  <div className="min-w-0 pr-2">
+                    <span className="font-bold block text-[10px] uppercase tracking-wider text-teal-800">
+                      Drive Photo Asset:
+                    </span>
+                    <span className="text-[11px] text-teal-700 underline flex items-center gap-1 font-medium mt-0.5 truncate">
+                      Google Drive Image <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition-transform flex-shrink-0">
+                    <i className="fa-brands fa-google-drive"></i>
+                  </div>
+                </a>
+
+                {selectedDoctor.geminiLink && (
+                  <a
+                    href={selectedDoctor.geminiLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-purple-50/80 hover:bg-purple-100/80 transition-colors rounded-xl p-3 border border-purple-200 text-xs text-purple-900 flex items-center justify-between group"
+                  >
+                    <div className="min-w-0 pr-2">
+                      <span className="font-bold block text-[10px] uppercase tracking-wider text-purple-800">
+                        Gemini AI Share:
+                      </span>
+                      <span className="text-[11px] text-purple-700 underline flex items-center gap-1 font-medium mt-0.5 truncate">
+                        Open Gemini Link <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                      </span>
+                    </div>
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition-transform flex-shrink-0">
+                      <i className="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                  </a>
+                )}
               </div>
             </div>
 

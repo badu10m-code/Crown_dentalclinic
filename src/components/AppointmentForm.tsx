@@ -304,7 +304,7 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
-                placeholder="+91 98765 43210"
+                placeholder="+91 92421 58621"
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-500 focus:bg-white transition-colors text-slate-800"
               />
             </div>

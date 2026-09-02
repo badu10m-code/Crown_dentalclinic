@@ -1,3 +1,7 @@
+import drRahulImg from "../assets/images/regenerated_image_1788325466083.jpg";
+import drPriyaImg from "../assets/images/regenerated_image_1788325829852.jpg";
+import drAmanImg from "../assets/images/regenerated_image_1788325357456.jpg";
+
 export interface Doctor {
   id: string;
   name: string;
@@ -6,6 +10,7 @@ export interface Doctor {
   experience: string;
   image: string;
   driveLink: string;
+  geminiLink?: string;
   bio: string;
   achievements: string[];
   schedule: string;
@@ -25,6 +30,16 @@ export interface DentalService {
   estimatedTime: string;
   painLevel: string;
   priceRange: string;
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+  address: string;
+  landmark: string;
+  phone: string;
+  mapQuery: string;
+  embedUrl: string;
 }
 
 export interface FAQItem {
@@ -52,10 +67,10 @@ export const CLINIC_DATA = {
     "Pain-free Treatments",
     "Advanced Dental Technology"
   ],
-  phone: "+91 98765 43210",
-  phoneRaw: "+919876543210",
-  whatsapp: "919999999999",
-  whatsappUrl: "https://wa.me/919999999999?text=Hello%20Crown%20%26%20Roots%20Dental%20Clinic%2C%20I%20would%20like%20to%20inquire%20about%20a%20dental%20appointment%20and%20consultation.",
+  phone: "+91 92421 58621",
+  phoneRaw: "+919242158621",
+  whatsapp: "919242158621",
+  whatsappUrl: "https://wa.me/919242158621?text=Hello%20Crown%20%26%20Roots%20Dental%20Clinic%2C%20I%20would%20like%20to%20inquire%20about%20a%20dental%20appointment%20and%20consultation.",
   email: "care@crownandroots.com",
   timings: "9:30 AM to 7:30 PM (Mon - Sat) | Sunday: By Appointment",
   googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbxBDdnmVwKxUaXIelOVYqSKOzB-v2heEdkizra_7DTijx-vBXc_sUcwwXk6M9HB-WbvHg/exec",
@@ -64,20 +79,24 @@ export const CLINIC_DATA = {
   
   branches: [
     {
+      id: "south-ex",
       name: "South Extension II Branch",
       address: "L 1/3, Block-L, South Extension II, New Delhi, Delhi 110049",
       landmark: "Near South Extension Metro Station",
-      phone: "+91 98765 43210",
-      mapQuery: "Crown and Roots Dental Clinic South Extension II New Delhi"
+      phone: "+91 92421 58621",
+      mapQuery: "Crown and Roots Dental Clinic South Extension II New Delhi",
+      embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7008.07670666788!2d77.21125277770994!3d28.568611000000008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce25d02f7ed73%3A0x6a5eb2c766f2ed58!2sSouth%20Extension!5e0!3m2!1sen!2sin!4v1788326815747!5m2!1sen!2sin"
     },
     {
+      id: "gurgaon",
       name: "Gurgaon Branch",
       address: "Shop No 303/1, Lajpat Nagar, New Railway Rd, Gurugram, Haryana 122001",
       landmark: "Opposite Civil Hospital Rd",
-      phone: "+91 98765 43210",
-      mapQuery: "Crown and Roots Dental Clinic Gurgaon"
+      phone: "+91 92421 58621",
+      mapQuery: "Crown and Roots Dental Clinic Gurgaon",
+      embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224472.8990797052!2d76.73766378671876!3d28.467828000000022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19ccc7cd4e17%3A0x97f212d15a2604bb!2sCentre%20For%20Sight%20Group%20of%20Eye%20Hospitals%20%7C%20New%20Railway%20Rd%20%7C%20Gurugram!5e0!3m2!1sen!2sin!4v1788327069529!5m2!1sen!2sin"
     }
-  ],
+  ] as Branch[],
 
   highlights: [
     {
@@ -107,13 +126,14 @@ export const CLINIC_DATA = {
   doctors: [
     {
       id: "dr-rahul",
-      name: "Dr. Rahul Sharma",
+      name: "Dr. Rahul Verma",
       degree: "MDS - Orthodontics & Dentofacial Orthopedics",
       specialization: "Invisalign Specialist & Braces Expert",
       experience: "10+ Years Exp",
-      driveLink: "https://drive.google.com/open?id=DRIVE_IMAGE_LINK_DR_RAHUL_SHARMA",
-      image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
-      bio: "Dr. Rahul Sharma completed his MDS in Orthodontics and specializes in modern aligners (Invisalign Diamond certified), self-ligating braces, and complex malocclusion corrections for children, teens, and working adults.",
+      geminiLink: "https://g.co/gemini/share/aca297d28973",
+      driveLink: "https://drive.google.com/file/d/1iT4Pot-aUIgUQp4IZpL3l_w5nqsbC30r/view?usp=drivesdk",
+      image: drRahulImg,
+      bio: "Dr. Rahul Verma completed his MDS in Orthodontics and specializes in modern aligners (Invisalign Diamond certified), self-ligating braces, and complex malocclusion corrections for children, teens, and working adults.",
       achievements: [
         "Certified Invisalign & Clear Aligner Provider",
         "Over 1,200+ successful orthodontic smiles corrected",
@@ -127,8 +147,9 @@ export const CLINIC_DATA = {
       degree: "BDS, Fellowship in Aesthetic & Cosmetic Dentistry",
       specialization: "Cosmetic Dentist & Smile Makeover Artist",
       experience: "8 Years Exp",
-      driveLink: "https://drive.google.com/open?id=DRIVE_IMAGE_LINK_DR_PRIYA_PATEL",
-      image: "https://images.unsplash.com/photo-1594824813629-6e3e5601ff39?q=80&w=800&auto=format&fit=crop",
+      geminiLink: "https://g.co/gemini/share/63655ee3fac0",
+      driveLink: "https://drive.google.com/file/d/1LGP5VWs0O1ms-YQFRfo1RusGf2_xRNPV/view?usp=drivesdk",
+      image: drPriyaImg,
       bio: "Dr. Priya Patel is recognized for her artistic eye and gentle approach. She specializes in ultra-thin porcelain veneers, laser teeth whitening, composite bonding, and holistic smile designing tailored to each facial harmony.",
       achievements: [
         "Advanced Diploma in Digital Smile Design (DSD)",
@@ -143,8 +164,9 @@ export const CLINIC_DATA = {
       degree: "MDS - Oral & Maxillofacial Surgery, Fellow ICOI",
       specialization: "Implantologist & Oral Surgeon",
       experience: "12 Years Exp",
-      driveLink: "https://drive.google.com/open?id=DRIVE_IMAGE_LINK_DR_AMAN_VERMA",
-      image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+      geminiLink: "https://g.co/gemini/share/ee8283728242",
+      driveLink: "https://drive.google.com/file/d/1KK9jn3nbeXZEZW6TgDMNibtyX8EYid3o/view?usp=drivesdk",
+      image: drAmanImg,
       bio: "Dr. Aman Verma is an accomplished Oral & Maxillofacial Surgeon known for painless single-sitting root canals, immediate basal dental implants, computer-guided implantology, and atraumatic wisdom tooth extractions.",
       achievements: [
         "Fellow of International Congress of Oral Implantologists (ICOI)",
@@ -368,7 +390,7 @@ export const CLINIC_DATA = {
     {
       id: "faq-5",
       question: "How do I book an appointment and what should I bring on my first visit?",
-      answer: "You can book easily right on this page via the 'Book Appointment' button, call our reception directly at +91 98765 43210, or send a WhatsApp message to 919999999999. Please bring any recent dental X-rays, medical history notes, or insurance/CGHS cards if applicable. We will perform an initial 3D digital exam and discuss your custom smile roadmap.",
+      answer: "You can book easily right on this page via the 'Book Appointment' button, call our reception directly at +91 92421 58621, or send a WhatsApp message to +91 92421 58621. Please bring any recent dental X-rays, medical history notes, or insurance/CGHS cards if applicable. We will perform an initial 3D digital exam and discuss your custom smile roadmap.",
       category: "Appointments"
     }
   ] as FAQItem[],

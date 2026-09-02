@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CLINIC_DATA } from '../data/clinicData';
 
 interface AboutUsTabProps {
@@ -6,6 +6,9 @@ interface AboutUsTabProps {
 }
 
 export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => {
+  const [selectedBranchIdx, setSelectedBranchIdx] = useState(0);
+  const activeBranch = CLINIC_DATA.branches[selectedBranchIdx] || CLINIC_DATA.branches[0];
+
   return (
     <div className="py-10 bg-slate-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 space-y-12">
@@ -96,7 +99,7 @@ export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => 
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm">
           <div className="max-w-2xl mb-6">
             <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest block mb-1">
-              Locations
+              Locations & Google Maps
             </span>
             <h2 className="text-2xl font-bold text-slate-900">
               Visit Our Prime Clinics
@@ -109,40 +112,58 @@ export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Branch Cards */}
             <div className="lg:col-span-5 space-y-3.5">
-              {CLINIC_DATA.branches.map((b, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-teal-700 font-bold text-sm mb-1">
-                    <i className="fa-solid fa-location-dot text-xs"></i>
-                    <h3>{b.name}</h3>
+              {CLINIC_DATA.branches.map((b, idx) => {
+                const isSelected = selectedBranchIdx === idx;
+                return (
+                  <div
+                    key={b.id || idx}
+                    id={`branch-card-${b.id || idx}`}
+                    onClick={() => setSelectedBranchIdx(idx)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-teal-50/50 border-teal-500 shadow-md shadow-teal-500/10 ring-1 ring-teal-500/20'
+                        : 'bg-slate-50 border-slate-100 hover:border-teal-200'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2 text-teal-700 font-bold text-sm">
+                        <i className="fa-solid fa-location-dot text-xs"></i>
+                        <h3>{b.name}</h3>
+                      </div>
+                      {isSelected && (
+                        <span className="text-[10px] font-bold bg-teal-600 text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+                          <i className="fa-solid fa-map-pin text-[8px]"></i>
+                          Active Map
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-slate-600 text-xs leading-relaxed">
+                      {b.address}
+                    </p>
+                    <p className="text-slate-400 text-[11px] mt-1 font-medium">
+                      <i className="fa-solid fa-landmark mr-1 text-teal-600"></i>
+                      {b.landmark}
+                    </p>
+                    <div className="mt-2.5 pt-2.5 border-t border-slate-200/60 flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-700">
+                        {b.phone}
+                      </span>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          b.mapQuery
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1 hover:underline"
+                      >
+                        <span>Directions</span>
+                        <i className="fa-solid fa-diamond-turn-right text-[10px]"></i>
+                      </a>
+                    </div>
                   </div>
-                  <p className="text-slate-600 text-xs leading-relaxed">
-                    {b.address}
-                  </p>
-                  <p className="text-slate-400 text-[11px] mt-1 font-medium">
-                    <i className="fa-solid fa-landmark mr-1 text-teal-600"></i>
-                    {b.landmark}
-                  </p>
-                  <div className="mt-2.5 pt-2.5 border-t border-slate-200/60 flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-700">
-                      {b.phone}
-                    </span>
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        b.mapQuery
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1"
-                    >
-                      <span>Directions</span>
-                      <i className="fa-solid fa-diamond-turn-right text-[10px]"></i>
-                    </a>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Consultation prompt */}
               <div className="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-100 text-center">
@@ -150,6 +171,7 @@ export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => 
                   Need assistance finding our entrance?
                 </p>
                 <button
+                  id="book-priority-appointment-btn"
                   onClick={onBookAppointment}
                   className="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-colors shadow-md shadow-teal-600/20 cursor-pointer"
                 >
@@ -160,23 +182,57 @@ export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => 
 
             {/* Google Maps Iframe Container */}
             <div className="lg:col-span-7">
-              <div className="relative rounded-2xl overflow-hidden border border-slate-100 shadow-sm h-80 bg-slate-100">
+              {/* Branch switcher tabs on top of map */}
+              <div className="flex items-center gap-2 mb-3 bg-slate-100 p-1.5 rounded-xl border border-slate-200/80">
+                {CLINIC_DATA.branches.map((b, idx) => {
+                  const isSelected = selectedBranchIdx === idx;
+                  return (
+                    <button
+                      key={b.id || idx}
+                      id={`map-tab-${b.id || idx}`}
+                      onClick={() => setSelectedBranchIdx(idx)}
+                      className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        isSelected
+                          ? 'bg-white text-teal-700 shadow-sm border border-slate-200/60'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <i className="fa-solid fa-map-location-dot text-[11px] text-teal-600"></i>
+                      <span className="truncate">{b.name.replace(' Branch', '')}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm h-96 bg-slate-100">
                 <iframe
-                  title="Crown and Roots Clinic Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14016.945898305072!2d77.2185244!3d28.5670845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2697858c973%3A0xe54e6347fb7e6515!2sSouth%20Extension%20II%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  id={`google-map-iframe-${activeBranch.id || selectedBranchIdx}`}
+                  title={`${activeBranch.name} Location`}
+                  src={activeBranch.embedUrl}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen={true}
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   className="w-full h-full"
                 ></iframe>
 
                 {/* Map Overlay info slot */}
-                <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-lg border border-slate-100 shadow text-[10px] text-slate-700 font-medium flex items-center gap-1.5">
+                <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-200 shadow text-[10px] text-slate-700 font-medium flex items-center gap-2">
                   <i className="fa-solid fa-map-pin text-rose-500"></i>
-                  <span>GPS Navigation Active</span>
+                  <span className="font-semibold">{activeBranch.name}</span>
+                  <span className="text-slate-400">•</span>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      activeBranch.mapQuery
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-teal-600 hover:underline font-bold"
+                  >
+                    Open in Maps
+                  </a>
                 </div>
               </div>
             </div>
@@ -186,3 +242,4 @@ export const AboutUsTab: React.FC<AboutUsTabProps> = ({ onBookAppointment }) => 
     </div>
   );
 };
+

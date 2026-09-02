@@ -89,7 +89,7 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
         nextOptions = ['Book Consultation', 'Call Billing Desk'];
       } else {
         botReply = `Thank you for your question! Crown & Roots Dental Clinic offers expert, painless treatments in Root Canals, Implants, Aligners, Smile Makeovers, and Pediatric Care. Would you like to schedule an initial 3D exam with our doctors?`;
-        nextOptions = ['Book Appointment', 'Call +91 98765 43210', 'WhatsApp Doctor'];
+        nextOptions = ['Book Appointment', `Call ${CLINIC_DATA.phone}`, 'WhatsApp Doctor'];
       }
 
       const botMsg: ChatMessage = {
@@ -149,7 +149,7 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-xl hover:shadow-emerald-600/30 hover:scale-105 active:scale-95 transition-all border border-emerald-500 cursor-pointer"
-            title="Chat on WhatsApp (919999999999)"
+            title={`Chat on WhatsApp (${CLINIC_DATA.phone})`}
           >
             <i className="fa-brands fa-whatsapp text-2xl"></i>
           </a>
@@ -164,7 +164,7 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
             id="sticky-call-btn"
             href={`tel:${CLINIC_DATA.phoneRaw}`}
             className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-xl hover:shadow-teal-600/30 hover:scale-105 active:scale-95 transition-all border border-teal-500 cursor-pointer"
-            title="Call Clinic Reception (+91 98765 43210)"
+            title={`Call Clinic Reception (${CLINIC_DATA.phone})`}
           >
             <i className="fa-solid fa-phone text-lg"></i>
           </a>
