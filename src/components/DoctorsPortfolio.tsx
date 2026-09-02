@@ -46,75 +46,84 @@ export const DoctorsPortfolio: React.FC<DoctorsPortfolioProps> = ({
                 : 'bg-emerald-100 text-emerald-600';
 
             return (
-              <div
-                key={doc.id}
-                id={`doctor-card-${doc.id}`}
-                className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md hover:border-teal-200 transition-all group"
-              >
-                <div>
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 flex-shrink-0">
-                      <img
-                        src={doc.image}
-                        alt={doc.name}
-                        referrerPolicy="no-referrer"
-                        className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md bg-teal-50"
-                        onError={(e) => {
-                          // Fallback to alternative drive direct export if needed
-                          const target = e.currentTarget;
-                          const fileId = doc.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
-                          if (fileId && !target.src.includes('uc?export=view')) {
-                            target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
-                          }
-                        }}
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[9px] shadow">
-                        <i className="fa-solid fa-user-doctor"></i>
+                <div
+                  key={doc.id}
+                  id={`doctor-card-${doc.id}`}
+                  onClick={() => setSelectedDoctor(doc)}
+                  className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/90 flex flex-col justify-between cursor-pointer transition-all duration-300 ease-out transform-gpu hover:-translate-y-3 hover:scale-[1.04] hover:shadow-2xl hover:shadow-teal-600/20 hover:border-teal-400 hover:ring-4 hover:ring-teal-400/20 active:scale-[1.02] active:-translate-y-1.5 group"
+                >
+                  <div>
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-18 h-18 sm:w-20 sm:h-20 flex-shrink-0">
+                        <img
+                          src={doc.image}
+                          alt={doc.name}
+                          referrerPolicy="no-referrer"
+                          className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover object-top border-2 border-white shadow-md bg-teal-50 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-lg group-hover:ring-2 group-hover:ring-teal-500"
+                          onError={(e) => {
+                            // Fallback to alternative drive direct export if needed
+                            const target = e.currentTarget;
+                            const fileId = doc.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                            if (fileId && !target.src.includes('uc?export=view')) {
+                              target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                            }
+                          }}
+                        />
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px] shadow group-hover:scale-110 group-hover:bg-teal-500 transition-all">
+                          <i className="fa-solid fa-user-doctor"></i>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-slate-900 text-base sm:text-lg group-hover:text-teal-600 transition-colors truncate">
+                          {doc.name}
+                        </h4>
+                        <p className="text-xs text-slate-500 truncate font-medium">{doc.degree} • {doc.specialization}</p>
+                        <p className="text-[10px] text-teal-600 font-bold uppercase tracking-wider mt-1 flex items-center gap-1">
+                          <i className="fa-solid fa-award text-xs"></i>
+                          <span>{doc.experience}</span>
+                        </p>
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-slate-900 text-base group-hover:text-teal-600 transition-colors truncate">
-                        {doc.name}
-                      </h4>
-                      <p className="text-xs text-slate-500 truncate">{doc.degree} • {doc.specialization}</p>
-                      <p className="text-[10px] text-teal-600 font-semibold uppercase tracking-wider mt-0.5">
-                        {doc.experience}
-                      </p>
+
+                    <p className="text-xs text-slate-600 mt-4 leading-relaxed line-clamp-3">
+                      {doc.bio}
+                    </p>
+
+                    <div className="mt-4 pt-3.5 border-t border-slate-100 space-y-1.5">
+                      {doc.achievements.slice(0, 2).map((ach, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
+                          <i className="fa-solid fa-circle-check text-teal-500 text-[10px] flex-shrink-0"></i>
+                          <span className="truncate">{ach}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 mt-4 leading-relaxed line-clamp-2">
-                    {doc.bio}
-                  </p>
-
-                  <div className="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5">
-                    {doc.achievements.slice(0, 2).map((ach, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
-                        <i className="fa-solid fa-circle-check text-teal-500 text-[10px] flex-shrink-0"></i>
-                        <span className="truncate">{ach}</span>
-                      </div>
-                    ))}
+                  <div className="mt-5 pt-3.5 border-t border-slate-100 flex gap-2">
+                    <button
+                      id={`book-with-${doc.id}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBookWithDoctor(doc.name);
+                      }}
+                      className="flex-1 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 hover:shadow-teal-600/30 hover:scale-[1.02]"
+                    >
+                      <i className="fa-solid fa-calendar-check text-xs"></i>
+                      <span>Consult {doc.name.split(' ')[1]}</span>
+                    </button>
+                    <button
+                      id={`view-full-bio-${doc.id}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedDoctor(doc);
+                      }}
+                      className="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Bio</span>
+                      <i className="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
                   </div>
                 </div>
-
-                <div className="mt-5 pt-3 border-t border-slate-100 flex gap-2">
-                  <button
-                    id={`book-with-${doc.id}`}
-                    onClick={() => onBookWithDoctor(doc.name)}
-                    className="flex-1 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-sm transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    <i className="fa-solid fa-calendar-check text-xs"></i>
-                    <span>Consult {doc.name.split(' ')[1]}</span>
-                  </button>
-                  <button
-                    id={`view-full-bio-${doc.id}`}
-                    onClick={() => setSelectedDoctor(doc)}
-                    className="px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors cursor-pointer"
-                  >
-                    Bio
-                  </button>
-                </div>
-              </div>
             );
           })}
         </div>
@@ -132,94 +141,76 @@ export const DoctorsPortfolio: React.FC<DoctorsPortfolioProps> = ({
               <i className="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <div className="flex items-center gap-4 mb-5">
-              <img
-                src={selectedDoctor.image}
-                alt={selectedDoctor.name}
-                referrerPolicy="no-referrer"
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-teal-500 shadow-md bg-teal-50"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  const fileId = selectedDoctor.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
-                  if (fileId && !target.src.includes('uc?export=view')) {
-                    target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
-                  }
-                }}
-              />
-              <div>
-                <h3 className="text-xl font-extrabold text-slate-900">
+            {/* Doctor Header with Large Portrait */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-6 pb-6 border-b border-slate-100 text-center sm:text-left">
+              <div className="relative flex-shrink-0 group/img">
+                <img
+                  src={selectedDoctor.image}
+                  alt={selectedDoctor.name}
+                  referrerPolicy="no-referrer"
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl object-cover object-top border-4 border-teal-500/25 shadow-xl bg-teal-50 ring-4 ring-teal-500/10"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    const fileId = selectedDoctor.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                    if (fileId && !target.src.includes('uc?export=view')) {
+                      target.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                    }
+                  }}
+                />
+                <div className="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-teal-600 text-white flex items-center gap-1.5 text-xs font-bold shadow-md border-2 border-white">
+                  <i className="fa-solid fa-user-doctor text-[11px]"></i>
+                  <span>Specialist</span>
+                </div>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="inline-block bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full mb-1.5 border border-teal-200/70">
+                  {selectedDoctor.specialization}
+                </div>
+                <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                   {selectedDoctor.name}
                 </h3>
-                <p className="text-teal-600 font-bold text-xs uppercase tracking-wide">
-                  {selectedDoctor.specialization}
-                </p>
-                <p className="text-slate-500 text-xs font-medium">
+                <p className="text-slate-600 text-sm font-semibold mt-0.5">
                   {selectedDoctor.degree}
                 </p>
-                <span className="inline-block mt-1 bg-slate-900 text-teal-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
-                  {selectedDoctor.experience}
-                </span>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+                  <span className="bg-slate-900 text-teal-300 text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+                    <i className="fa-solid fa-award text-teal-400 text-xs"></i>
+                    <span>{selectedDoctor.experience}</span>
+                  </span>
+                  <span className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+                    <i className="fa-solid fa-circle-check text-emerald-500 text-xs"></i>
+                    <span>Verified MDS Doctor</span>
+                  </span>
+                </div>
               </div>
             </div>
 
             <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
-              <p>{selectedDoctor.bio}</p>
+              <div>
+                <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <i className="fa-solid fa-align-left text-teal-600"></i>
+                  <span>About Doctor</span>
+                </h4>
+                <p className="text-slate-600 leading-relaxed text-sm bg-slate-50/70 rounded-2xl p-4 border border-slate-100">
+                  {selectedDoctor.bio}
+                </p>
+              </div>
 
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
-                <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2">
-                  Clinical Expertise & Certifications
+                <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <i className="fa-solid fa-shield-halved text-teal-600"></i>
+                  <span>Clinical Expertise & Certifications</span>
                 </h4>
-                <ul className="space-y-1.5 text-xs text-slate-600">
+                <ul className="space-y-2 text-xs text-slate-600">
                   {selectedDoctor.achievements.map((ach, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <i className="fa-solid fa-shield-check text-teal-600 mt-0.5"></i>
-                      <span>{ach}</span>
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <i className="fa-solid fa-circle-check text-teal-600 mt-0.5 text-xs flex-shrink-0"></i>
+                      <span className="leading-snug">{ach}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              {/* Resource Links: Google Drive & Gemini */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <a
-                  href={selectedDoctor.driveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-teal-50/80 hover:bg-teal-100/80 transition-colors rounded-xl p-3 border border-teal-200 text-xs text-teal-900 flex items-center justify-between group"
-                >
-                  <div className="min-w-0 pr-2">
-                    <span className="font-bold block text-[10px] uppercase tracking-wider text-teal-800">
-                      Drive Photo Asset:
-                    </span>
-                    <span className="text-[11px] text-teal-700 underline flex items-center gap-1 font-medium mt-0.5 truncate">
-                      Google Drive Image <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                    </span>
-                  </div>
-                  <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition-transform flex-shrink-0">
-                    <i className="fa-brands fa-google-drive"></i>
-                  </div>
-                </a>
-
-                {selectedDoctor.geminiLink && (
-                  <a
-                    href={selectedDoctor.geminiLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-purple-50/80 hover:bg-purple-100/80 transition-colors rounded-xl p-3 border border-purple-200 text-xs text-purple-900 flex items-center justify-between group"
-                  >
-                    <div className="min-w-0 pr-2">
-                      <span className="font-bold block text-[10px] uppercase tracking-wider text-purple-800">
-                        Gemini AI Share:
-                      </span>
-                      <span className="text-[11px] text-purple-700 underline flex items-center gap-1 font-medium mt-0.5 truncate">
-                        Open Gemini Link <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                      </span>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition-transform flex-shrink-0">
-                      <i className="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                  </a>
-                )}
               </div>
             </div>
 

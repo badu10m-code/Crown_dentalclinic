@@ -131,10 +131,17 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
           <button
             id="sticky-ai-assistant-btn"
             onClick={() => setIsAiChatOpen(!isAiChatOpen)}
-            className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-slate-900 text-teal-400 flex items-center justify-center shadow-xl hover:shadow-teal-500/20 hover:scale-105 active:scale-95 transition-all border border-slate-700 cursor-pointer"
+            className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-2xl p-[2px] flex items-center justify-center shadow-xl shadow-teal-950/20 hover:shadow-teal-500/30 hover:scale-105 active:scale-95 transition-all cursor-pointer overflow-hidden group/btn"
             title="Ask AI Dental Assistant"
           >
-            <i className="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            {/* Shining Border Mask Animation */}
+            <span
+              className="absolute inset-[-150%] animate-border-spin bg-[conic-gradient(from_0deg,transparent_0_240deg,rgba(45,212,191,0.25)_280deg,#2dd4bf_325deg,#ffffff_360deg)] pointer-events-none"
+            />
+            {/* Core Box Container */}
+            <span className="relative z-10 w-full h-full rounded-[14px] bg-slate-900 text-teal-400 flex items-center justify-center border border-slate-700/60 shadow-inner group-hover/btn:bg-slate-800 transition-colors">
+              <i className="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            </span>
           </button>
           <span className="absolute right-15 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-slate-700">
             Ask AI Dental Concierge
@@ -148,10 +155,17 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
             href={CLINIC_DATA.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-xl hover:shadow-emerald-600/30 hover:scale-105 active:scale-95 transition-all border border-emerald-500 cursor-pointer"
+            className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-2xl p-[2px] flex items-center justify-center shadow-xl shadow-emerald-950/20 hover:shadow-emerald-600/30 hover:scale-105 active:scale-95 transition-all cursor-pointer overflow-hidden group/btn"
             title={`Chat on WhatsApp (${CLINIC_DATA.phone})`}
           >
-            <i className="fa-brands fa-whatsapp text-2xl"></i>
+            {/* Shining Border Mask Animation */}
+            <span
+              className="absolute inset-[-150%] animate-border-spin bg-[conic-gradient(from_120deg,transparent_0_240deg,rgba(52,211,153,0.25)_280deg,#34d399_325deg,#ffffff_360deg)] pointer-events-none"
+            />
+            {/* Core Box Container */}
+            <span className="relative z-10 w-full h-full rounded-[14px] bg-emerald-600 group-hover/btn:bg-emerald-700 text-white flex items-center justify-center border border-emerald-400/50 shadow-inner transition-colors">
+              <i className="fa-brands fa-whatsapp text-2xl"></i>
+            </span>
           </a>
           <span className="absolute right-15 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-slate-700">
             Chat on WhatsApp
@@ -163,10 +177,17 @@ export const StickyActionButtons: React.FC<StickyActionButtonsProps> = ({
           <a
             id="sticky-call-btn"
             href={`tel:${CLINIC_DATA.phoneRaw}`}
-            className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-xl hover:shadow-teal-600/30 hover:scale-105 active:scale-95 transition-all border border-teal-500 cursor-pointer"
+            className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-2xl p-[2px] flex items-center justify-center shadow-xl shadow-teal-950/20 hover:shadow-teal-600/30 hover:scale-105 active:scale-95 transition-all cursor-pointer overflow-hidden group/btn"
             title={`Call Clinic Reception (${CLINIC_DATA.phone})`}
           >
-            <i className="fa-solid fa-phone text-lg"></i>
+            {/* Shining Border Mask Animation */}
+            <span
+              className="absolute inset-[-150%] animate-border-spin bg-[conic-gradient(from_240deg,transparent_0_240deg,rgba(45,212,191,0.25)_280deg,#2dd4bf_325deg,#ffffff_360deg)] pointer-events-none"
+            />
+            {/* Core Box Container */}
+            <span className="relative z-10 w-full h-full rounded-[14px] bg-teal-600 group-hover/btn:bg-teal-700 text-white flex items-center justify-center border border-teal-400/50 shadow-inner transition-colors">
+              <i className="fa-solid fa-phone text-lg"></i>
+            </span>
           </a>
           <span className="absolute right-15 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-slate-700">
             Call Reception

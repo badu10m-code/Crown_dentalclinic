@@ -5,6 +5,7 @@ import { HeroTypewriter } from './components/HeroTypewriter';
 import { ServicesMarquee } from './components/ServicesMarquee';
 import { DoctorsPortfolio } from './components/DoctorsPortfolio';
 import { InteriorAndInstagram } from './components/InteriorAndInstagram';
+import { TestimonialsSection } from './components/TestimonialsSection';
 import { DynamicServicesTab } from './components/DynamicServicesTab';
 import { AboutUsTab } from './components/AboutUsTab';
 import { FaqTab } from './components/FaqTab';
@@ -103,55 +104,8 @@ export const App: React.FC = () => {
             {/* 5. Interior Facility Gallery & Instagram Video Reel */}
             <InteriorAndInstagram />
 
-            {/* 6. Patient Ratings & Testimonials */}
-            <section className="py-16 bg-slate-900 text-white">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-2xl mx-auto mb-12">
-                  <span className="text-teal-400 text-xs font-extrabold uppercase tracking-wider bg-teal-950/60 px-3 py-1 rounded-full border border-teal-800/60">
-                    Patient Testimonials
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3">
-                    Smiles Transformed, Fears Relieved
-                  </h2>
-                  <p className="text-slate-400 text-sm mt-1">
-                    Read genuine feedback from our patients across Delhi NCR.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {CLINIC_DATA.testimonials.map((t, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/80 shadow-lg flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center gap-1 text-amber-400 text-sm mb-3">
-                          {[...Array(t.rating)].map((_, i) => (
-                            <i key={i} className="fa-solid fa-star"></i>
-                          ))}
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed italic">
-                          "{t.text}"
-                        </p>
-                      </div>
-                      <div className="mt-6 pt-4 border-t border-slate-700/60 flex items-center justify-between">
-                        <div>
-                          <h4 className="font-bold text-sm text-white">
-                            {t.name}
-                          </h4>
-                          <p className="text-[11px] text-teal-400 font-semibold">
-                            {t.treatment}
-                          </p>
-                        </div>
-                        <span className="text-[11px] text-slate-500 font-medium">
-                          {t.city}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            {/* 6. Patient Ratings & Testimonials with Staggered Star Pop-up */}
+            <TestimonialsSection />
 
             {/* 7. Embedded Appointment Booking Form Section */}
             <section

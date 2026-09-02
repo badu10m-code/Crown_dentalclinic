@@ -406,7 +406,7 @@ export const CLINIC_DATA = {
     {
       name: "Mr. Mahip Parashar",
       treatment: "Kid Dental Care & Braces",
-      text: "I bought my eight year old son to the clinic for his treatment. My son was too scared to visit a dentist but upon entering the clinic it gave a kid friendly vibe. The doctors are highly professional and patient-friendly. Highly recommended to everyone!",
+      text: "I brought my eight year old son to the clinic for his treatment. My son was too scared to visit a dentist but upon entering the clinic it gave a kid friendly vibe. The doctors are highly professional and patient-friendly. Highly recommended to everyone!",
       rating: 5,
       city: "Gurugram"
     },

@@ -1,9 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CLINIC_DATA } from '../data/clinicData';
 
 export const InteriorAndInstagram: React.FC = () => {
   const interiors = CLINIC_DATA.interiorGallery;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Video autoplay, loop & mute state
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+
+  // Scroll detection via IntersectionObserver: autoplays when scrolled into view, loops continuously
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            setHasStarted(true);
+          } else {
+            setIsInView(false);
+          }
+        });
+      },
+      {
+        threshold: 0.25, // Starts playing when 25% of the video card enters the viewport
+      }
+    );
+
+    const el = videoContainerRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
+
+  // Control YouTube player pause/resume based on scroll viewport
+  useEffect(() => {
+    if (!iframeRef.current || !iframeRef.current.contentWindow) return;
+    try {
+      if (isInView) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+          '*'
+        );
+      } else if (hasStarted) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+          '*'
+        );
+      }
+    } catch {
+      // Ignore postMessage origin restrictions
+    }
+  }, [isInView, hasStarted]);
+
+  // Audio mute toggle handler
+  const toggleMute = () => {
+    const nextMute = !isMuted;
+    setIsMuted(nextMute);
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({
+            event: 'command',
+            func: nextMute ? 'mute' : 'unMute',
+            args: [],
+          }),
+          '*'
+        );
+        if (!nextMute) {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({
+              event: 'command',
+              func: 'setVolume',
+              args: [100],
+            }),
+            '*'
+          );
+        }
+      } catch {
+        // Ignore
+      }
+    }
+  };
+
+  const videoId = 'YlF_fm5UPNE';
+  const embedUrl = hasStarted
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=${
+        isMuted ? '1' : '0'
+      }&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&iv_load_policy=3&fs=0`
+    : '';
 
   return (
     <section className="py-12 bg-white border-t border-slate-100">
@@ -85,55 +177,72 @@ export const InteriorAndInstagram: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: YouTube Shorts Vertical Container (Width ~370px, Height ~658px) */}
+          {/* Right: Autoplaying Transformation Reel Container */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="w-full max-w-[370px] bg-white border border-slate-100 rounded-3xl p-4 sm:p-5 shadow-sm">
+            <div className="w-full max-w-[370px] bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+              {/* Header without YouTube logo, channel name, or 'Shorts' text */}
               <div className="flex items-center justify-between mb-3.5">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs shadow">
-                    <i className="fa-brands fa-youtube"></i>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center text-xs shadow-sm shadow-teal-600/30">
+                    <i className="fa-solid fa-circle-play text-sm"></i>
                   </div>
                   <div>
-                    <h3 className="font-bold text-xs text-slate-900">
-                      Patient Stories & Shorts
+                    <h3 className="font-bold text-xs sm:text-sm text-slate-900">
+                      Patient Transformation Reel
                     </h3>
-                    <p className="text-[10px] text-slate-400">
-                      Crown & Roots Clinic Experience
+                    <p className="text-[10px] text-slate-400 font-medium">
+                      Crown & Roots Dental Clinic
                     </p>
                   </div>
                 </div>
-                <a
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1"
+
+                {/* Sound control toggle button */}
+                <button
+                  id="reel-audio-toggle-btn"
+                  onClick={toggleMute}
+                  className="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-teal-50 text-slate-700 hover:text-teal-700 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-slate-200/80"
+                  title={isMuted ? 'Click to Unmute' : 'Click to Mute'}
                 >
-                  YouTube <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                </a>
+                  <i className={`fa-solid ${isMuted ? 'fa-volume-xmark text-slate-400' : 'fa-volume-high text-teal-600'}`}></i>
+                  <span className="text-[10px]">{isMuted ? 'Tap for Sound' : 'Sound On'}</span>
+                </button>
               </div>
 
-              {/* Responsive YouTube Shorts Frame (370px x 658px standard vertical ratio) */}
+              {/* Responsive Video Reel Frame (Autoplays on scroll and loops repeatedly) */}
               <div
-                id="youtube-shorts-container"
+                ref={videoContainerRef}
+                id="patient-transformation-reel-container"
                 className="relative w-full max-w-[370px] h-[540px] sm:h-[620px] lg:h-[658px] mx-auto rounded-2xl overflow-hidden bg-black shadow-inner border border-slate-200"
               >
-                <iframe
-                  src="https://www.youtube.com/embed/YlF_fm5UPNE"
-                  title="Crown & Roots Dental Clinic - Patient Story & Smile Makeover"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="w-full h-full border-0 rounded-2xl"
-                ></iframe>
-              </div>
+                {/* Top mask overlay to cleanly conceal any YouTube channel header/avatar */}
+                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none z-10"></div>
 
-              <div className="mt-3 px-1 flex items-center justify-between text-[11px] text-slate-500">
-                <span className="flex items-center gap-1.5 font-medium text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                  Real Patient Transformation
-                </span>
-                <span className="text-[10px] bg-red-50 text-red-700 font-semibold px-2 py-0.5 rounded-full border border-red-100">
-                  Shorts Video
-                </span>
+                {/* On-Video Sound Toggle Icon */}
+                <div className="absolute bottom-4 right-4 z-20">
+                  <button
+                    id="reel-overlay-sound-toggle"
+                    onClick={toggleMute}
+                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                    className="w-10 h-10 rounded-full bg-slate-950/80 hover:bg-slate-900 text-white text-sm font-semibold backdrop-blur-md border border-white/25 shadow-lg flex items-center justify-center transition-transform active:scale-95 cursor-pointer"
+                  >
+                    <i className={`fa-solid ${isMuted ? 'fa-volume-xmark text-rose-400' : 'fa-volume-high text-emerald-400'}`}></i>
+                  </button>
+                </div>
+
+                {hasStarted ? (
+                  <iframe
+                    ref={iframeRef}
+                    src={embedUrl}
+                    title="Patient Smile Transformation Reel"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-[calc(100%+88px)] -mt-[44px] border-0 rounded-2xl scale-[1.04] transform-gpu pointer-events-auto"
+                  ></iframe>
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-3 p-4 text-center">
+                    <i className="fa-solid fa-circle-play text-5xl text-teal-500 animate-pulse"></i>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -86,11 +86,22 @@ export const Navbar: React.FC<NavbarProps> = ({
               setActiveTab('home');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3 text-left group focus:outline-none"
+            className="flex items-center gap-3 text-left group focus:outline-none cursor-pointer transition-all duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] transform-gpu"
           >
             <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-teal-600/20 group-hover:scale-105 transition-transform">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <svg
+                className="w-6 h-6 transition-all duration-500 ease-out transform-gpu group-hover:scale-115 group-hover:rotate-6 group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.85)] group-active:scale-95"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="transition-all duration-500 ease-out group-hover:stroke-teal-100 group-hover:stroke-[2.5]"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
             <div>
